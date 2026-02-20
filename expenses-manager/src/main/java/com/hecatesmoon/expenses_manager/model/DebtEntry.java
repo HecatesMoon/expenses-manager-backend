@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -22,11 +24,14 @@ public class DebtEntry {
 
     private BigDecimal moneyAmount;
 
-    //todo:make enum
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private DebtType type;
 
     @Column(name="is_paid")
     private Boolean isPaid;
+
+    @Column(name="is_active")
+    private Boolean isActive;
 
     private LocalDateTime dateLimit;
 
@@ -56,11 +61,11 @@ public class DebtEntry {
         this.moneyAmount = moneyAmount;
     }
 
-    public String getType() {
+    public DebtType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(DebtType type) {
         this.type = type;
     }
 
@@ -70,6 +75,14 @@ public class DebtEntry {
 
     public void setIsPaid(Boolean isPaid) {
         this.isPaid = isPaid;
+    }
+
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
     }
 
     public LocalDateTime getDateLimit() {
