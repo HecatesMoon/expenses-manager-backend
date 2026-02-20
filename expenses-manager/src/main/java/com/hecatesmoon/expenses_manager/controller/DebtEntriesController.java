@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.hecatesmoon.expenses_manager.model.DebtEntry;
 import com.hecatesmoon.expenses_manager.service.DebtEntriesService;
+
+import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,7 +33,7 @@ public class DebtEntriesController {
     }
 
     @PostMapping("/api/debt/entry/new")
-    public ResponseEntity<DebtEntry> postMethodName(@RequestBody DebtEntry debtEntry) {
+    public ResponseEntity<DebtEntry> postMethodName(@Valid @RequestBody DebtEntry debtEntry) {
         DebtEntry saved = this.debtEntriesService.saveEntry(debtEntry);
         return ResponseEntity.ok(saved);
     }

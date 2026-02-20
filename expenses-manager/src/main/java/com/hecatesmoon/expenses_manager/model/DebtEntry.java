@@ -13,6 +13,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 @Entity
 @Table(name="debt_entries")
@@ -22,17 +25,21 @@ public class DebtEntry {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull(message = "Amount can't be null")
+    @Positive(message = "Amount has to be greater than zero")
     private BigDecimal moneyAmount;
 
+    @NotNull(message = "You have to choose a type")
     @Enumerated(EnumType.STRING)
     private DebtType type;
 
     @Column(name="is_paid")
-    private Boolean isPaid;
+    private Boolean isPaid = false;
 
     @Column(name="is_active")
-    private Boolean isActive;
+    private Boolean isActive = true;
 
+    @Future(message = "The date has to be in the future")
     private LocalDateTime dateLimit;
 
     @Column(name="created_at")
