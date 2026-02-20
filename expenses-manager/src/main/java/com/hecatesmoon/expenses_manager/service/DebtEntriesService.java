@@ -21,5 +21,9 @@ public class DebtEntriesService {
     public List<DebtEntry> getAll(){
         return this.debtEntriesRepository.findAll();
     }
+
+    public DebtEntry saveEntry(DebtEntry debtEntry) {
+        return this.debtEntriesRepository.save(debtEntry);
+    }
     
 }

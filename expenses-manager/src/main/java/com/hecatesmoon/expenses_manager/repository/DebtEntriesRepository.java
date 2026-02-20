@@ -11,6 +11,6 @@ import com.hecatesmoon.expenses_manager.model.DebtEntry;
 public interface DebtEntriesRepository extends JpaRepository<DebtEntry, Long>{
     List<DebtEntry> findAll();
 
-    DebtEntry save();
+    DebtEntry save(DebtEntry debtEntry);
 
 }
