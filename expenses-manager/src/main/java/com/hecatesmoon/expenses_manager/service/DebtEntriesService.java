@@ -22,6 +22,10 @@ public class DebtEntriesService {
         return this.debtEntriesRepository.findAll();
     }
 
+    public DebtEntry getById(Long id){
+        return this.debtEntriesRepository.findById(id).orElse(null);
+    }
+
     public DebtEntry saveEntry(DebtEntry debtEntry) {
         return this.debtEntriesRepository.save(debtEntry);
     }
