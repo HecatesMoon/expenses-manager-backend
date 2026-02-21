@@ -16,4 +16,6 @@ public interface DebtEntriesRepository extends JpaRepository<DebtEntry, Long>{
 
     Optional<DebtEntry> findById(Long id);
 
+    void deleteById(Long id);
+
 }

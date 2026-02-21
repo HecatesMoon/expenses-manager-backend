@@ -11,6 +11,7 @@ import com.hecatesmoon.expenses_manager.service.DebtEntriesService;
 
 import jakarta.validation.Valid;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,18 +35,22 @@ public class DebtEntriesController {
         return this.debtEntriesService.getAll();
     }
 
-    @PostMapping("/api/debt/entry/new")
+    @PostMapping("/api/debt/entries/create")
     public ResponseEntity<DebtEntry> addDebtEntry(@Valid @RequestBody DebtEntry debtEntry) {
         DebtEntry saved = this.debtEntriesService.saveEntry(debtEntry);
         return ResponseEntity.ok(saved);
     }
     
-    @GetMapping("/api/debt/entry/{id}")
+    @GetMapping("/api/debt/entries/get/{id}")
     public ResponseEntity<DebtEntry> getEntryById(@PathVariable Long id) {
         DebtEntry entry = this.debtEntriesService.getById(id);
         return ResponseEntity.ok(entry);
     }
-    
 
+    @DeleteMapping("/api/debt/entries/delete/{id}")
+    public ResponseEntity<Void> deleteEntryById(@PathVariable Long id) {
+        this.debtEntriesService.deleteEntry(id);
+        return ResponseEntity.noContent().build();
+    }
     
 }
