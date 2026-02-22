@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hecatesmoon.expenses_manager.model.DebtEntry;
+import com.hecatesmoon.expenses_manager.model.DebtType;
 import com.hecatesmoon.expenses_manager.service.DebtEntriesService;
 
 import jakarta.validation.Valid;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 
@@ -61,6 +64,11 @@ public class DebtEntriesController {
         updated = debtEntriesService.updateEntry(updated);
 
         return ResponseEntity.ok(updated);
+    }
+    
+    @GetMapping("/api/types/list")
+    public ResponseEntity<DebtType[]> getTypeList() {
+        return ResponseEntity.ok(DebtType.values());
     }
     
     
