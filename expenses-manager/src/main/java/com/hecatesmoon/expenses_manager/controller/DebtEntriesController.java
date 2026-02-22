@@ -52,5 +52,16 @@ public class DebtEntriesController {
         this.debtEntriesService.deleteEntry(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PostMapping("/api/debt/entries/update/{id}")
+    public ResponseEntity<DebtEntry> updateEntry(@Valid @RequestBody DebtEntry debtEntry, @PathVariable Long id) {
+        
+        DebtEntry updated = debtEntry;
+        updated.setId(id);
+        updated = debtEntriesService.updateEntry(updated);
+
+        return ResponseEntity.ok(updated);
+    }
+    
     
 }

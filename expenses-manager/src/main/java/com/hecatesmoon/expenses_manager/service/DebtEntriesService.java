@@ -34,6 +34,16 @@ public class DebtEntriesService {
         return this.debtEntriesRepository.save(debtEntry);
     }
 
+    public DebtEntry updateEntry(DebtEntry debtEntry) {
+        Long id = debtEntry.getId();
+        DebtEntry original = debtEntriesRepository
+                             .findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Entry not found by id: " + id));
+
+        debtEntry.setCreatedAt(original.getCreatedAt());
+
+        return this.debtEntriesRepository.save(debtEntry);
+    }
+
     public void deleteEntry(Long id) {
         if (!this.debtEntriesRepository.existsById(id)){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Entry not found by id: " + id);
