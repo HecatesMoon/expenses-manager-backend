@@ -1,5 +1,6 @@
 package com.hecatesmoon.expenses_manager.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +61,16 @@ public class DebtEntriesService {
         }
 
         this.debtEntriesRepository.deleteById(id);
+    }
+
+    public BigDecimal getTotalDebt(){
+        BigDecimal total = BigDecimal.ZERO;
+        List<DebtEntry> debtList = debtEntriesRepository.findAll();
+        for (DebtEntry entry : debtList){
+            total = total.add(entry.getMoneyAmount());
+        }
+
+        return total;
     }
     
 }

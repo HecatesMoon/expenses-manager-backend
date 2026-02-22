@@ -1,5 +1,6 @@
 package com.hecatesmoon.expenses_manager.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,6 +71,12 @@ public class DebtEntriesController {
     public ResponseEntity<DebtType[]> getTypeList() {
         return ResponseEntity.ok(DebtType.values());
     }
+
+    @GetMapping("/api/debt/total")
+    public ResponseEntity<BigDecimal> getTotalAmount() {
+        return ResponseEntity.ok(debtEntriesService.getTotalDebt());
+    }
+    
     
     
 }

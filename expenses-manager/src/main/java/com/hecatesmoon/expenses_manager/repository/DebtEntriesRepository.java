@@ -18,4 +18,6 @@ public interface DebtEntriesRepository extends JpaRepository<DebtEntry, Long>{
 
     void deleteById(Long id);
 
+    List<DebtEntry> findByIsActiveTrue();
+
 }
