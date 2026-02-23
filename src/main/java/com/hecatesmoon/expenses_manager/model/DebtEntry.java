@@ -56,7 +56,6 @@ public class DebtEntry {
 
     public DebtEntry() {}
 
-
     //getters and setters
     public Long getId() {
         return id;
