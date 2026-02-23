@@ -27,32 +27,32 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class DebtEntriesController {
     
     @Autowired
-    private final DebtEntriesService debtEntriesService;
+    private final DebtEntriesService service;
 
-    public DebtEntriesController (DebtEntriesService debtEntriesService){
-        this.debtEntriesService = debtEntriesService;
+    public DebtEntriesController (DebtEntriesService service){
+        this.service = service;
     }
 
     @GetMapping("/api/debt/entries/all")
     public List<DebtEntry> getAllEntries() {
-        return this.debtEntriesService.getAll();
+        return this.service.getAll();
     }
 
     @PostMapping("/api/debt/entries/create")
     public ResponseEntity<DebtEntry> addDebtEntry(@Valid @RequestBody DebtEntry debtEntry) {
-        DebtEntry saved = this.debtEntriesService.saveEntry(debtEntry);
+        DebtEntry saved = this.service.saveEntry(debtEntry);
         return ResponseEntity.ok(saved);
     }
     
     @GetMapping("/api/debt/entries/get/{id}")
     public ResponseEntity<DebtEntry> getEntryById(@PathVariable Long id) {
-        DebtEntry entry = this.debtEntriesService.getById(id);
+        DebtEntry entry = this.service.getById(id);
         return ResponseEntity.ok(entry);
     }
 
     @DeleteMapping("/api/debt/entries/delete/{id}")
     public ResponseEntity<Void> deleteEntryById(@PathVariable Long id) {
-        this.debtEntriesService.deleteEntry(id);
+        this.service.deleteEntry(id);
         return ResponseEntity.noContent().build();
     }
 
@@ -61,7 +61,7 @@ public class DebtEntriesController {
         
         DebtEntry updated = debtEntry;
         updated.setId(id);
-        updated = debtEntriesService.updateEntry(updated);
+        updated = service.updateEntry(updated);
 
         return ResponseEntity.ok(updated);
     }
@@ -73,7 +73,7 @@ public class DebtEntriesController {
 
     @GetMapping("/api/debt/total")
     public ResponseEntity<BigDecimal> getTotalAmount() {
-        return ResponseEntity.ok(debtEntriesService.getTotalDebt());
+        return ResponseEntity.ok(service.getTotalDebt());
     }
     
     

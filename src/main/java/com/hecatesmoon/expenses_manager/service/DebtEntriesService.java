@@ -15,56 +15,56 @@ import com.hecatesmoon.expenses_manager.repository.DebtEntriesRepository;
 public class DebtEntriesService {
 
     @Autowired
-    private final DebtEntriesRepository debtEntriesRepository;
+    private final DebtEntriesRepository repository;
 
-    public DebtEntriesService(DebtEntriesRepository debtEntriesRepository){
-        this.debtEntriesRepository = debtEntriesRepository;
+    public DebtEntriesService(DebtEntriesRepository repository){
+        this.repository = repository;
     }
 
     public List<DebtEntry> getAll(){
-        return this.debtEntriesRepository.findAll();
+        return this.repository.findAll();
     }
 
     public DebtEntry getById(Long id){
-        return this.debtEntriesRepository.findById(id)
+        return this.repository.findById(id)
                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Entry not found by id: " + id));
     }
 
     public DebtEntry saveEntry(DebtEntry debtEntry) {
-        return this.debtEntriesRepository.save(debtEntry);
+        return this.repository.save(debtEntry);
     }
 
     public DebtEntry updateEntry(DebtEntry debtEntry) {
         Long id = debtEntry.getId();
-        DebtEntry original = debtEntriesRepository
+        DebtEntry original = repository
                              .findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Entry not found by id: " + id));
 
         debtEntry.setCreatedAt(original.getCreatedAt());
 
-        return this.debtEntriesRepository.save(debtEntry);
+        return this.repository.save(debtEntry);
     }
 
     public void deleteEntry(Long id) {
-        if (!this.debtEntriesRepository.existsById(id)){
+        if (!this.repository.existsById(id)){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Entry not found by id: " + id);
         }
 
-        this.debtEntriesRepository.deleteById(id);
+        this.repository.deleteById(id);
     }
 
     public void deleteEntry(DebtEntry entry) {
         Long id = entry.getId();
 
-        if (!this.debtEntriesRepository.existsById(id)){
+        if (!this.repository.existsById(id)){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Entry not found by id: " + id);
         }
 
-        this.debtEntriesRepository.deleteById(id);
+        this.repository.deleteById(id);
     }
 
     public BigDecimal getTotalDebt(){
         BigDecimal total = BigDecimal.ZERO;
-        List<DebtEntry> debtList = debtEntriesRepository.findAll();
+        List<DebtEntry> debtList = repository.findAll();
         for (DebtEntry entry : debtList){
             total = total.add(entry.getMoneyAmount());
         }
