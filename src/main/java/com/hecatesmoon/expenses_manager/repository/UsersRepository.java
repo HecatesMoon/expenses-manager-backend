@@ -7,5 +7,7 @@ import com.hecatesmoon.expenses_manager.model.User;
 
 @Repository
 public interface UsersRepository extends JpaRepository<User, Long> {
-    
+    User save(User user);
+
+    Boolean existsByEmail(String email);
 }
