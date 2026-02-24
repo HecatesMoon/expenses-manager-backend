@@ -15,11 +15,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class RestExceptionHandler {
     
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, Object>> HandleValidationException(MethodArgumentNotValidException ex){
+    public ResponseEntity<Map<String, Object>> handleValidationException(MethodArgumentNotValidException ex){
 
-        Map<String, Object> response = new LinkedHashMap<>();
-        response.put("timestamp", LocalDateTime.now());
-        response.put("status", HttpStatus.BAD_REQUEST.value());
+        Map<String, Object> response = this.standardFormat();
     
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getFieldErrors().forEach(e -> errors.put(e.getField(), e.getDefaultMessage()));
@@ -29,12 +27,18 @@ public class RestExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
-    public ResponseEntity<Map<String, Object>> HandleBusinessException(BusinessException ex){
-        Map<String, Object> response = new LinkedHashMap<>();
-        response.put("timestamp", LocalDateTime.now());
-        response.put("status", HttpStatus.BAD_REQUEST.value());
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity<Map<String, Object>> handleBusinessException(BusinessException ex){
+        Map<String, Object> response = this.standardFormat();
         response.put("error", ex.getMessage());
 
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    private Map<String, Object> standardFormat (){
+        Map<String, Object> response = new LinkedHashMap<>();
+        response.put("timestamp", LocalDateTime.now());
+        response.put("status", HttpStatus.BAD_REQUEST.value());
+        return response;
     }
 }
