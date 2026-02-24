@@ -1,9 +1,12 @@
 package com.hecatesmoon.expenses_manager.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.hecatesmoon.expenses_manager.dto.LoginRequest;
 import com.hecatesmoon.expenses_manager.exception.BusinessException;
 import com.hecatesmoon.expenses_manager.model.User;
 import com.hecatesmoon.expenses_manager.repository.UsersRepository;
@@ -28,6 +31,17 @@ public class UsersService {
         user.setPassword(newPassword);
 
         return this.repository.save(user);
+    }
+
+    public User loginValidation(LoginRequest login){
+        User user = repository.findByEmail(login.getEmail())
+                              .orElseThrow(() -> new BusinessException("Email or Password not valid"));
+        
+        if (!passwordEncoder.matches(login.getPassword(), user.getPassword())){
+            throw new BusinessException("Email or Password not valid");
+        }
+
+        return user;
     }
 
     private void newUserValidation(User user){

@@ -5,9 +5,11 @@ import org.springframework.boot.webmvc.autoconfigure.WebMvcProperties.Apiversion
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hecatesmoon.expenses_manager.dto.LoginRequest;
 import com.hecatesmoon.expenses_manager.model.User;
 import com.hecatesmoon.expenses_manager.service.UsersService;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,5 +31,15 @@ public class UsersController {
         User newUser = this.service.createUser(user);
         return ResponseEntity.ok(newUser);
     }
+
+    @PostMapping("/api/user/login")
+    public ResponseEntity<User> postMethodName(@Valid @RequestBody LoginRequest login, HttpSession session) {
+        User user = service.loginValidation(login);
+
+        session.setAttribute("user_id", user.getId());
+
+        return ResponseEntity.ok(user);
+    }
+    
     
 }

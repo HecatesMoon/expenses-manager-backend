@@ -1,5 +1,7 @@
 package com.hecatesmoon.expenses_manager.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,4 +12,6 @@ public interface UsersRepository extends JpaRepository<User, Long> {
     User save(User user);
 
     Boolean existsByEmail(String email);
+
+    Optional<User> findByEmail(String email);
 }
