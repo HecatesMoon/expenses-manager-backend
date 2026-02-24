@@ -1,7 +1,6 @@
 package com.hecatesmoon.expenses_manager.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.webmvc.autoconfigure.WebMvcProperties.Apiversion.Use;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,8 +26,10 @@ public class UsersController {
     }
 
     @PostMapping("/api/user/create")
-    public ResponseEntity<User> postMethodName(@Valid @RequestBody User user) {
+    public ResponseEntity<User> postMethodName(@Valid @RequestBody User user, HttpSession session) {
         User newUser = this.service.createUser(user);
+
+        session.setAttribute("user_id", newUser.getId());
         return ResponseEntity.ok(newUser);
     }
 
