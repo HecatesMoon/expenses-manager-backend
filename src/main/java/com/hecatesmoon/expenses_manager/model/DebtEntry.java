@@ -3,6 +3,8 @@ package com.hecatesmoon.expenses_manager.model;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -50,6 +52,7 @@ public class DebtEntry {
     @Column(name="updated_at")
     private LocalDateTime updatedAt;
 
+    @JsonBackReference(value = "debt-entries")
     @ManyToOne
     @JoinColumn(name="user_id")
     private User user;
@@ -121,6 +124,14 @@ public class DebtEntry {
         this.updatedAt = updatedAt;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @PrePersist
     protected void onCreate(){
         this.createdAt = LocalDateTime.now();
@@ -131,5 +142,5 @@ public class DebtEntry {
     protected void onUpdate(){
         this.updatedAt = LocalDateTime.now();
     }
-    
+
 }

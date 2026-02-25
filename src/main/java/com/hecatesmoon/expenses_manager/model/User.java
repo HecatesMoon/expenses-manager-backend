@@ -3,6 +3,8 @@ package com.hecatesmoon.expenses_manager.model;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -46,6 +48,7 @@ public class User {
     @Column(name="updated_at")
     private LocalDateTime updatedAt;
 
+    @JsonManagedReference(value = "debt-entries")
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<DebtEntry> debtEntries;
 

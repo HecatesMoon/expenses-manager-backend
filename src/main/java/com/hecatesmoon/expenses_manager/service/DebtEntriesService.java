@@ -25,6 +25,12 @@ public class DebtEntriesService {
         return this.repository.findAll();
     }
 
+    public List<DebtEntry> getAllUserEntries(Long id){
+        return this.repository.findByUserId(id);
+    }
+    
+    //todo: manage null or use exception
+
     public DebtEntry getById(Long id){
         return this.repository.findById(id)
                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Entry not found by id: " + id));
@@ -62,9 +68,9 @@ public class DebtEntriesService {
         this.repository.deleteById(id);
     }
 
-    public BigDecimal getTotalDebt(){
+    public BigDecimal getTotalDebt(Long id){
         BigDecimal total = BigDecimal.ZERO;
-        List<DebtEntry> debtList = repository.findAll();
+        List<DebtEntry> debtList = repository.findByUserId(id);
         for (DebtEntry entry : debtList){
             total = total.add(entry.getMoneyAmount());
         }

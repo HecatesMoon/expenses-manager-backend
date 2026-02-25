@@ -21,6 +21,11 @@ public class UsersService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    //todo: manage null or use exception
+    public User getUserById (Long id){
+        return this.repository.findById(id).orElse(null);
+    }
+
     public User createUser(User user){
 
         newUserValidation(user);
