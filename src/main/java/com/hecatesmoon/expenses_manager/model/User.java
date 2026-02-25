@@ -37,7 +37,7 @@ public class User {
     @Size(min = 5, max = 100, message = "The email has to have between 5 and 100 characters")
     private String email;
     @Size(min = 8, max = 100, message = "The password has to have between 8 and 100 characters")
-    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\\\S+$).{8,}$", message = "The password needs to at leas have: a number, a uppercase and a lowcase letter, without spaces")
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}$", message = "The password needs to at leas have: a number, a uppercase and a lowcase letter, without spaces")
     private String password;
     @Transient
     private String confirmPassword;
