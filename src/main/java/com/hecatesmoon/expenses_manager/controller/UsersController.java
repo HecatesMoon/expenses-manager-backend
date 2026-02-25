@@ -45,7 +45,7 @@ public class UsersController {
     @GetMapping("/api/user/logout")
     public ResponseEntity<?> getMethodName(HttpSession session) { 
         session.invalidate();
-        return ResponseEntity.ok("Logged out succesfully");
+        return ResponseEntity.ok("Logged out succesfully"); //todo: better messaging
     }
      
 }

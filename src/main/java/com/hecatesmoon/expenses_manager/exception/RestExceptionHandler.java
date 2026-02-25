@@ -35,6 +35,7 @@ public class RestExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(UnauthorizedException.class)
     public ResponseEntity<Map<String, Object>> handleUnauthorizedException (UnauthorizedException ex){
         Map<String, Object> response = this.standardFormat();
         response.put("error", ex.getMessage());
