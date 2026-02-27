@@ -4,16 +4,13 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hecatesmoon.expenses_manager.exception.UnauthorizedException;
 import com.hecatesmoon.expenses_manager.model.DebtEntry;
 import com.hecatesmoon.expenses_manager.model.DebtType;
-import com.hecatesmoon.expenses_manager.model.User;
 import com.hecatesmoon.expenses_manager.service.DebtEntriesService;
-import com.hecatesmoon.expenses_manager.service.UsersService;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -29,12 +26,9 @@ public class DebtEntriesController {
     
     @Autowired
     private final DebtEntriesService debtService;
-    @Autowired
-    private final UsersService usersService;
 
-    public DebtEntriesController (DebtEntriesService debtService, UsersService usersService){
+    public DebtEntriesController (DebtEntriesService debtService){
         this.debtService = debtService;
-        this.usersService = usersService;
     }
 
     //User based endpoints
@@ -51,9 +45,7 @@ public class DebtEntriesController {
         Long userId = (Long) session.getAttribute("user_id");
         if (userId == null) throw new UnauthorizedException("You need to login first");
         
-        debtEntry.setUser(this.usersService.getUserById(userId));
-
-        DebtEntry saved = this.debtService.saveEntry(debtEntry);
+        DebtEntry saved = this.debtService.saveEntry(debtEntry, userId);
         return ResponseEntity.ok(saved);
     }
     
@@ -62,12 +54,7 @@ public class DebtEntriesController {
         Long userId = (Long) session.getAttribute("user_id");
         if (userId == null) throw new UnauthorizedException("You need to login first");
 
-        DebtEntry entry = this.debtService.getById(id);
-
-        //todo: use an exception in service
-        if (entry.getUser().getId() != userId){
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
+        DebtEntry entry = this.debtService.getById(id, userId);
 
         return ResponseEntity.ok(entry);
     }
@@ -77,15 +64,8 @@ public class DebtEntriesController {
         Long userId = (Long) session.getAttribute("user_id");
         if (userId == null) throw new UnauthorizedException("You need to login first");
 
-        //todo: apply DRY
-        DebtEntry entry = this.debtService.getById(id);
+        this.debtService.deleteEntry(id, userId);
 
-        //todo: use an exception in service
-        if (entry.getUser().getId() != userId){
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
-
-        this.debtService.deleteEntry(id);
         return ResponseEntity.noContent().build();
     }
 
@@ -94,17 +74,7 @@ public class DebtEntriesController {
         Long userId = (Long) session.getAttribute("user_id");
         if (userId == null) throw new UnauthorizedException("You need to login first");
 
-        //todo: apply DRY
-        DebtEntry entry = this.debtService.getById(id);
-
-        //todo: use an exception in service
-        if (entry.getUser().getId() != userId){
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
-        
-        DebtEntry updated = debtEntry;
-        updated.setId(id);
-        updated = debtService.updateEntry(updated);
+        DebtEntry updated = debtService.updateEntry(debtEntry, id, userId);
 
         return ResponseEntity.ok(updated);
     }
