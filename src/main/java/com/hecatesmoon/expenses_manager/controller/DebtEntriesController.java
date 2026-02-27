@@ -40,17 +40,18 @@ public class DebtEntriesController {
     //User based endpoints
     @GetMapping("/api/debt/entries/all")
     public List<DebtEntry> getAllEntries(HttpSession session) {
-        if (session.getAttribute("user_id") == null) throw new UnauthorizedException("You need to login first");
         Long userId = (Long) session.getAttribute("user_id");
+        if (userId == null) throw new UnauthorizedException("You need to login first");
+
         return this.debtService.getAllUserEntries(userId);
     }
 
     @PostMapping("/api/debt/entries/create")
     public ResponseEntity<DebtEntry> addDebtEntry(@Valid @RequestBody DebtEntry debtEntry, HttpSession session) {
-        if (session.getAttribute("user_id") == null) throw new UnauthorizedException("You need to login first");
+        Long userId = (Long) session.getAttribute("user_id");
+        if (userId == null) throw new UnauthorizedException("You need to login first");
         
-        User user = this.usersService.getUserById((Long) session.getAttribute("user_id"));
-        debtEntry.setUser(user);
+        debtEntry.setUser(this.usersService.getUserById(userId));
 
         DebtEntry saved = this.debtService.saveEntry(debtEntry);
         return ResponseEntity.ok(saved);
@@ -58,12 +59,13 @@ public class DebtEntriesController {
     
     @GetMapping("/api/debt/entries/get/{id}")
     public ResponseEntity<DebtEntry> getEntryById(@PathVariable Long id, HttpSession session) {
-        if (session.getAttribute("user_id") == null) throw new UnauthorizedException("You need to login first");
+        Long userId = (Long) session.getAttribute("user_id");
+        if (userId == null) throw new UnauthorizedException("You need to login first");
 
         DebtEntry entry = this.debtService.getById(id);
 
         //todo: use an exception in service
-        if (entry.getUser().getId() != session.getAttribute("user_id")){
+        if (entry.getUser().getId() != userId){
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
@@ -72,13 +74,14 @@ public class DebtEntriesController {
 
     @DeleteMapping("/api/debt/entries/delete/{id}")
     public ResponseEntity<Void> deleteEntryById(@PathVariable Long id, HttpSession session) {
-        if (session.getAttribute("user_id") == null) throw new UnauthorizedException("You need to login first");
+        Long userId = (Long) session.getAttribute("user_id");
+        if (userId == null) throw new UnauthorizedException("You need to login first");
 
         //todo: apply DRY
         DebtEntry entry = this.debtService.getById(id);
 
         //todo: use an exception in service
-        if (entry.getUser().getId() != session.getAttribute("user_id")){
+        if (entry.getUser().getId() != userId){
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
@@ -88,13 +91,14 @@ public class DebtEntriesController {
 
     @PostMapping("/api/debt/entries/update/{id}")
     public ResponseEntity<DebtEntry> updateEntry(@Valid @RequestBody DebtEntry debtEntry, @PathVariable Long id, HttpSession session) {
-        if (session.getAttribute("user_id") == null) throw new UnauthorizedException("You need to login first");
+        Long userId = (Long) session.getAttribute("user_id");
+        if (userId == null) throw new UnauthorizedException("You need to login first");
 
         //todo: apply DRY
         DebtEntry entry = this.debtService.getById(id);
 
         //todo: use an exception in service
-        if (entry.getUser().getId() != session.getAttribute("user_id")){
+        if (entry.getUser().getId() != userId){
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         
@@ -107,10 +111,11 @@ public class DebtEntriesController {
     
     @GetMapping("/api/debt/total")
     public ResponseEntity<BigDecimal> getTotalAmount(HttpSession session) {
-        if (session.getAttribute("user_id") == null) throw new UnauthorizedException("You need to login first");
+        Long userId = (Long) session.getAttribute("user_id");
+        if (userId == null) throw new UnauthorizedException("You need to login first");
 
         //todo: better json as response
-        return ResponseEntity.ok(debtService.getTotalDebt((Long) session.getAttribute("user_id")));
+        return ResponseEntity.ok(debtService.getTotalDebt(userId));
     }
 
     //general endpoints
