@@ -64,7 +64,7 @@ public class DebtEntriesService {
         return DebtEntryResponse.from(newEntry);
     }
 
-    public DebtEntry updateEntry(DebtEntry debtEntry, Long id, Long userId) {
+    public DebtEntryResponse updateEntry(DebtEntryRequest debtEntry, Long id, Long userId) {
         DebtEntry original = debtRepository.findById(id)
                                            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Entry not found by id: " + id));
 
@@ -72,10 +72,14 @@ public class DebtEntriesService {
             throw new AccessDeniedException("You do not have access to this entry.");
         }
 
-        debtEntry.setId(id);
-        debtEntry.setCreatedAt(original.getCreatedAt());
+        DebtEntry updatedEntry = DebtEntryRequest.from(debtEntry);
 
-        return this.debtRepository.save(debtEntry);
+        updatedEntry.setId(id);
+        updatedEntry.setCreatedAt(original.getCreatedAt());
+
+        updatedEntry = this.debtRepository.save(updatedEntry);
+
+        return DebtEntryResponse.from(updatedEntry);
     }
 
     public void deleteEntry(Long id, Long userId) {

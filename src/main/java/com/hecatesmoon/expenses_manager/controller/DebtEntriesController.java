@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.hecatesmoon.expenses_manager.dto.DebtEntryRequest;
 import com.hecatesmoon.expenses_manager.dto.DebtEntryResponse;
 import com.hecatesmoon.expenses_manager.exception.UnauthorizedException;
-import com.hecatesmoon.expenses_manager.model.DebtEntry;
 import com.hecatesmoon.expenses_manager.model.DebtType;
 import com.hecatesmoon.expenses_manager.service.DebtEntriesService;
 
@@ -72,11 +71,11 @@ public class DebtEntriesController {
     }
 
     @PostMapping("/api/debt/entries/update/{id}")
-    public ResponseEntity<DebtEntry> updateEntry(@Valid @RequestBody DebtEntry debtEntry, @PathVariable Long id, HttpSession session) {
+    public ResponseEntity<DebtEntryResponse> updateEntry(@Valid @RequestBody DebtEntryRequest debtEntry, @PathVariable Long id, HttpSession session) {
         Long userId = (Long) session.getAttribute("user_id");
         if (userId == null) throw new UnauthorizedException("You need to login first");
 
-        DebtEntry updated = debtService.updateEntry(debtEntry, id, userId);
+        DebtEntryResponse updated = debtService.updateEntry(debtEntry, id, userId);
 
         return ResponseEntity.ok(updated);
     }
