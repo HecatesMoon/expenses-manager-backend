@@ -45,7 +45,7 @@ public class DebtEntriesService {
     
     //todo: manage null or use exception
 
-    public DebtEntry getById(Long id, Long userId){
+    public DebtEntryResponse getById(Long id, Long userId){
         //todo: consider make a standard method for exception
         DebtEntry entry = this.debtRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("This debt entry does not exist: " + id));
 
@@ -53,7 +53,7 @@ public class DebtEntriesService {
             throw new AccessDeniedException("You do not have access to this entry.");
         }
 
-        return entry;
+        return DebtEntryResponse.from(entry);
     }
 
     public DebtEntryResponse saveEntry(DebtEntryRequest debtEntry, Long userId) {

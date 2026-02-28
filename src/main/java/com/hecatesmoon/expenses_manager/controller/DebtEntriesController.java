@@ -52,11 +52,11 @@ public class DebtEntriesController {
     }
     
     @GetMapping("/api/debt/entries/get/{id}")
-    public ResponseEntity<DebtEntry> getEntryById(@PathVariable Long id, HttpSession session) {
+    public ResponseEntity<DebtEntryResponse> getEntryById(@PathVariable Long id, HttpSession session) {
         Long userId = (Long) session.getAttribute("user_id");
         if (userId == null) throw new UnauthorizedException("You need to login first");
 
-        DebtEntry entry = this.debtService.getById(id, userId);
+        DebtEntryResponse entry = this.debtService.getById(id, userId);
 
         return ResponseEntity.ok(entry);
     }
