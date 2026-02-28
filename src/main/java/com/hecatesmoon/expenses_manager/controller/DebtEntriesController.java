@@ -2,6 +2,7 @@ package com.hecatesmoon.expenses_manager.controller;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -82,12 +83,12 @@ public class DebtEntriesController {
     }
     
     @GetMapping("/api/debt/total")
-    public ResponseEntity<BigDecimal> getTotalAmount(HttpSession session) {
+    public ResponseEntity<Map<String,BigDecimal>> getTotalAmount(HttpSession session) {
         Long userId = (Long) session.getAttribute("user_id");
         if (userId == null) throw new UnauthorizedException("You need to login first");
 
-        //todo: better json as response
-        return ResponseEntity.ok(debtService.getTotalDebt(userId));
+        BigDecimal total = debtService.getTotalDebt(userId);
+        return ResponseEntity.ok(Map.of("total", total));
     }
 
     //general endpoints
