@@ -30,7 +30,7 @@ public class RestExceptionHandler {
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<Map<String, Object>> handleBusinessException(BusinessException ex){
         Map<String, Object> response = this.standardFormat();
-        response.put("error", ex.getMessage());
+        response.put("error","Business : " +  ex.getMessage());
 
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
@@ -38,7 +38,7 @@ public class RestExceptionHandler {
     @ExceptionHandler(UnauthorizedException.class)
     public ResponseEntity<Map<String, Object>> handleUnauthorizedException (UnauthorizedException ex){
         Map<String, Object> response = this.standardFormat();
-        response.put("error", ex.getMessage());
+        response.put("error", "Unauthorized: " + ex.getMessage());
 
         return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
     }
@@ -46,7 +46,7 @@ public class RestExceptionHandler {
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<Map<String, Object>> handleAccessDeniedException (AccessDeniedException ex){
         Map<String, Object> response = this.standardFormat();
-        response.put("error", ex.getMessage());
+        response.put("error", "Access denied: " + ex.getMessage());
 
         return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
@@ -54,7 +54,7 @@ public class RestExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleResourceNotFoundException (ResourceNotFoundException ex){
         Map<String, Object> response = this.standardFormat();
-        response.put("error", ex.getMessage());
+        response.put("error", "resource not found: " + ex.getMessage());
 
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
