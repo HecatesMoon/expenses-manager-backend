@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.hecatesmoon.expenses_manager.dto.DebtEntryResponse;
 import com.hecatesmoon.expenses_manager.exception.AccessDeniedException;
 import com.hecatesmoon.expenses_manager.exception.ResourceNotFoundException;
 import com.hecatesmoon.expenses_manager.model.DebtEntry;
@@ -31,13 +32,14 @@ public class DebtEntriesService {
         return this.debtRepository.findAll();
     }
 
-    public List<DebtEntry> getAllUserEntries(Long id){
+    public List<DebtEntryResponse> getAllUserEntries(Long id){
 
         if (!usersRepository.existsById(id)){
             throw new AccessDeniedException("This user does not exist: " + id);
         }
 
-        return this.debtRepository.findByUserIdOrderByCreatedAtDesc(id);
+        List<DebtEntry> list = this.debtRepository.findByUserIdOrderByCreatedAtDesc(id);
+        return list.stream().map(DebtEntryResponse::from).toList();
     }
     
     //todo: manage null or use exception
