@@ -37,7 +37,7 @@ public class DebtEntriesService {
             throw new AccessDeniedException("This user does not exist: " + id);
         }
 
-        return this.debtRepository.findByUserId(id);
+        return this.debtRepository.findByUserIdOrderByCreatedAtDesc(id);
     }
     
     //todo: manage null or use exception

@@ -14,6 +14,8 @@ public interface DebtEntriesRepository extends JpaRepository<DebtEntry, Long>{
 
     List<DebtEntry> findByUserId(Long userId);
 
+    List<DebtEntry> findByUserIdOrderByCreatedAtDesc(Long userId);
+
     DebtEntry save(DebtEntry debtEntry);
 
     Optional<DebtEntry> findById(Long id);
