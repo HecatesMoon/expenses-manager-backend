@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.hecatesmoon.expenses_manager.dto.DebtEntryRequest;
 import com.hecatesmoon.expenses_manager.dto.DebtEntryResponse;
 import com.hecatesmoon.expenses_manager.exception.AccessDeniedException;
 import com.hecatesmoon.expenses_manager.exception.ResourceNotFoundException;
@@ -55,10 +56,12 @@ public class DebtEntriesService {
         return entry;
     }
 
-    public DebtEntry saveEntry(DebtEntry debtEntry, Long userId) {
-        debtEntry.setUser(this.usersRepository.findById(userId)
+    public DebtEntryResponse saveEntry(DebtEntryRequest debtEntry, Long userId) {
+        DebtEntry newEntry = DebtEntryRequest.from(debtEntry);
+        newEntry.setUser(this.usersRepository.findById(userId)
                                               .orElseThrow(() -> new ResourceNotFoundException("User does not exist: " + userId)));
-        return this.debtRepository.save(debtEntry);
+        newEntry = this.debtRepository.save(newEntry);
+        return DebtEntryResponse.from(newEntry);
     }
 
     public DebtEntry updateEntry(DebtEntry debtEntry, Long id, Long userId) {

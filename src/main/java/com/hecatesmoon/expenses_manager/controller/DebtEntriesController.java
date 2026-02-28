@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hecatesmoon.expenses_manager.dto.DebtEntryRequest;
 import com.hecatesmoon.expenses_manager.dto.DebtEntryResponse;
 import com.hecatesmoon.expenses_manager.exception.UnauthorizedException;
 import com.hecatesmoon.expenses_manager.model.DebtEntry;
@@ -42,11 +43,11 @@ public class DebtEntriesController {
     }
 
     @PostMapping("/api/debt/entries/create")
-    public ResponseEntity<DebtEntry> addDebtEntry(@Valid @RequestBody DebtEntry debtEntry, HttpSession session) {
+    public ResponseEntity<DebtEntryResponse> addDebtEntry(@Valid @RequestBody DebtEntryRequest debtEntry, HttpSession session) {
         Long userId = (Long) session.getAttribute("user_id");
         if (userId == null) throw new UnauthorizedException("You need to login first");
         
-        DebtEntry saved = this.debtService.saveEntry(debtEntry, userId);
+        DebtEntryResponse saved = this.debtService.saveEntry(debtEntry, userId);
         return ResponseEntity.ok(saved);
     }
     
