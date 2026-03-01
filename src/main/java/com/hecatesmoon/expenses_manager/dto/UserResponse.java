@@ -21,4 +21,25 @@ public class UserResponse {
         response.debtEntries = user.getDebtEntries();
         return response;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public List<DebtEntry> getDebtEntries() {
+        return debtEntries;
+    }
+
 }
