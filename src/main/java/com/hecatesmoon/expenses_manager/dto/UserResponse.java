@@ -9,6 +9,7 @@ public class UserResponse {
     private Long id;
     private String firstName;
     private String lastName;
+    private String email;
     private List<DebtEntry> debtEntries;
 
     public static UserResponse from (User user){
@@ -16,6 +17,7 @@ public class UserResponse {
         response.id = user.getId();
         response.firstName = user.getFirstName();
         response.lastName = user.getLastName();
+        response.email = user.getEmail();
         response.debtEntries = user.getDebtEntries();
         return response;
     }
