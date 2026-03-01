@@ -43,7 +43,7 @@ public class UsersService {
         return UserResponse.from(user);
     }
 
-    public User loginValidation(LoginRequest login){
+    public UserResponse loginValidation(LoginRequest login){
         User user = repository.findByEmail(login.getEmail())
                               .orElseThrow(() -> new BusinessException("Email or Password not valid"));
         
@@ -51,7 +51,7 @@ public class UsersService {
             throw new BusinessException("Email or Password not valid");
         }
 
-        return user;
+        return UserResponse.from(user);
     }
 
     private void newUserValidation(RegisterRequest user){

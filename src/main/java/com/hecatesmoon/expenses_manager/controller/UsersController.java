@@ -36,8 +36,8 @@ public class UsersController {
     }
 
     @PostMapping("/api/user/login")
-    public ResponseEntity<User> postMethodName(@Valid @RequestBody LoginRequest login, HttpSession session) {
-        User user = service.loginValidation(login);
+    public ResponseEntity<UserResponse> postMethodName(@Valid @RequestBody LoginRequest login, HttpSession session) {
+        UserResponse user = service.loginValidation(login);
 
         session.setAttribute("user_id", user.getId());
 
