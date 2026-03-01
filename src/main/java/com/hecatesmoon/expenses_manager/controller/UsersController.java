@@ -5,6 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hecatesmoon.expenses_manager.dto.LoginRequest;
+import com.hecatesmoon.expenses_manager.dto.RegisterRequest;
+import com.hecatesmoon.expenses_manager.dto.UserResponse;
 import com.hecatesmoon.expenses_manager.model.User;
 import com.hecatesmoon.expenses_manager.service.UsersService;
 
@@ -26,8 +28,8 @@ public class UsersController {
     }
 
     @PostMapping("/api/user/create")
-    public ResponseEntity<User> postMethodName(@Valid @RequestBody User user, HttpSession session) {
-        User newUser = this.service.createUser(user);
+    public ResponseEntity<UserResponse> postMethodName(@Valid @RequestBody RegisterRequest user, HttpSession session) {
+        UserResponse newUser = this.service.createUser(user);
 
         session.setAttribute("user_id", newUser.getId());
         return ResponseEntity.ok(newUser);

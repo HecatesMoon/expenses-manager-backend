@@ -5,6 +5,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.hecatesmoon.expenses_manager.dto.LoginRequest;
+import com.hecatesmoon.expenses_manager.dto.RegisterRequest;
+import com.hecatesmoon.expenses_manager.dto.UserResponse;
 import com.hecatesmoon.expenses_manager.exception.BusinessException;
 import com.hecatesmoon.expenses_manager.model.User;
 import com.hecatesmoon.expenses_manager.repository.UsersRepository;
@@ -26,14 +28,19 @@ public class UsersService {
         return this.repository.findById(id).orElse(null);
     }
 
-    public User createUser(User user){
+    public UserResponse createUser(RegisterRequest newUser){
 
-        newUserValidation(user);
+        newUserValidation(newUser);
+        
+        User user = RegisterRequest.from(newUser);
 
         String newPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(newPassword);
 
-        return this.repository.save(user);
+
+        user = this.repository.save(user);
+
+        return UserResponse.from(user);
     }
 
     public User loginValidation(LoginRequest login){
@@ -47,7 +54,7 @@ public class UsersService {
         return user;
     }
 
-    private void newUserValidation(User user){
+    private void newUserValidation(RegisterRequest user){
         
         if (!user.getPassword().equals(user.getConfirmPassword())){
             throw new BusinessException("Passwords are not equal");
