@@ -32,7 +32,7 @@ public class UsersService {
 
         newUserValidation(newUser);
         
-        User user = RegisterRequest.from(newUser);
+        User user = RegisterRequest.toEntity(newUser);
 
         String newPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(newPassword);

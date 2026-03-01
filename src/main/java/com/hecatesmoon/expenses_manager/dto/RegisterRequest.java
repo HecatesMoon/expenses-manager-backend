@@ -27,7 +27,7 @@ public class RegisterRequest {
 
     private String confirmPassword;
 
-    public static User from (RegisterRequest request) {
+    public static User toEntity(RegisterRequest request) {
         User user = new User();
         user.setFirstName(request.firstName);
         user.setLastName(request.lastName);

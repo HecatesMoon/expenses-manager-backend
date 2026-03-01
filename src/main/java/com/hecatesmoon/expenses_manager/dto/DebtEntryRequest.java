@@ -26,7 +26,7 @@ public class DebtEntryRequest {
     @Future(message = "The date has to be in the future")
     private LocalDateTime dateLimit;
 
-    public static DebtEntry from (DebtEntryRequest request){
+    public static DebtEntry toEntity (DebtEntryRequest request){
         DebtEntry entry = new DebtEntry();
         entry.setMoneyAmount(request.moneyAmount);
         entry.setType(request.type);

@@ -57,7 +57,7 @@ public class DebtEntriesService {
     }
 
     public DebtEntryResponse saveEntry(DebtEntryRequest debtEntry, Long userId) {
-        DebtEntry newEntry = DebtEntryRequest.from(debtEntry);
+        DebtEntry newEntry = DebtEntryRequest.toEntity(debtEntry);
         newEntry.setUser(this.usersRepository.findById(userId)
                                               .orElseThrow(() -> new ResourceNotFoundException("User does not exist: " + userId)));
         newEntry = this.debtRepository.save(newEntry);
@@ -72,7 +72,7 @@ public class DebtEntriesService {
             throw new AccessDeniedException("You do not have access to this entry.");
         }
 
-        DebtEntry updatedEntry = DebtEntryRequest.from(debtEntry);
+        DebtEntry updatedEntry = DebtEntryRequest.toEntity(debtEntry);
 
         updatedEntry.setId(id);
         updatedEntry.setCreatedAt(original.getCreatedAt());
