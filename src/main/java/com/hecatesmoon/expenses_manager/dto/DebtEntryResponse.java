@@ -29,4 +29,32 @@ public class DebtEntryResponse {
         return response;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public BigDecimal getMoneyAmount() {
+        return moneyAmount;
+    }
+
+    public DebtType getType() {
+        return type;
+    }
+
+    public Boolean getIsPaid() {
+        return isPaid;
+    }
+
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public LocalDateTime getDateLimit() {
+        return dateLimit;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
 }

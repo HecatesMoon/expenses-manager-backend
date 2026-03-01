@@ -35,4 +35,25 @@ public class DebtEntryRequest {
         entry.setDateLimit(request.dateLimit);
         return entry;
     }
+
+    public BigDecimal getMoneyAmount() {
+        return moneyAmount;
+    }
+
+    public DebtType getType() {
+        return type;
+    }
+
+    public Boolean getIsPaid() {
+        return isPaid;
+    }
+
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public LocalDateTime getDateLimit() {
+        return dateLimit;
+    }
+
 }
