@@ -28,16 +28,16 @@ public class UsersController {
         this.service = service;
     }
 
-    @PostMapping("/api/user/create")
-    public ResponseEntity<UserResponse> postMethodName(@Valid @RequestBody RegisterRequest user, HttpSession session) {
+    @PostMapping("/api/auth/register")
+    public ResponseEntity<UserResponse> register(@Valid @RequestBody RegisterRequest user, HttpSession session) {
         UserResponse newUser = this.service.createUser(user);
 
         session.setAttribute("user_id", newUser.getId());
         return ResponseEntity.ok(newUser);
     }
 
-    @PostMapping("/api/user/login")
-    public ResponseEntity<UserResponse> postMethodName(@Valid @RequestBody LoginRequest login, HttpSession session) {
+    @PostMapping("/api/auth/login")
+    public ResponseEntity<UserResponse> login(@Valid @RequestBody LoginRequest login, HttpSession session) {
         UserResponse user = service.loginValidation(login);
 
         session.setAttribute("user_id", user.getId());
@@ -45,8 +45,8 @@ public class UsersController {
         return ResponseEntity.ok(user);
     }
     
-    @GetMapping("/api/user/logout")
-    public ResponseEntity<Map<String, String>> getMethodName(HttpSession session) { 
+    @GetMapping("/api/auth/logout")
+    public ResponseEntity<Map<String, String>> logout(HttpSession session) { 
         session.invalidate();
         return ResponseEntity.ok(Map.of("message","Logged out succesfully"));
     }

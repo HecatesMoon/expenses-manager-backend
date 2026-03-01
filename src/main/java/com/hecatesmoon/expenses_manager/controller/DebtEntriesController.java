@@ -35,7 +35,7 @@ public class DebtEntriesController {
     }
 
     //User based endpoints
-    @GetMapping("/api/debt/entries/all")
+    @GetMapping("/api/debt/entries")
     public List<DebtEntryResponse> getAllEntries(HttpSession session) {
         Long userId = (Long) session.getAttribute("user_id");
         if (userId == null) throw new UnauthorizedException("You need to login first");
@@ -43,7 +43,7 @@ public class DebtEntriesController {
         return this.debtService.getAllUserEntries(userId);
     }
 
-    @PostMapping("/api/debt/entries/create")
+    @PostMapping("/api/debt/entries")
     public ResponseEntity<DebtEntryResponse> addDebtEntry(@Valid @RequestBody DebtEntryRequest debtEntry, HttpSession session) {
         Long userId = (Long) session.getAttribute("user_id");
         if (userId == null) throw new UnauthorizedException("You need to login first");
@@ -52,7 +52,7 @@ public class DebtEntriesController {
         return ResponseEntity.ok(saved);
     }
     
-    @GetMapping("/api/debt/entries/get/{id}")
+    @GetMapping("/api/debt/entry/{id}")
     public ResponseEntity<DebtEntryResponse> getEntryById(@PathVariable Long id, HttpSession session) {
         Long userId = (Long) session.getAttribute("user_id");
         if (userId == null) throw new UnauthorizedException("You need to login first");
@@ -62,7 +62,7 @@ public class DebtEntriesController {
         return ResponseEntity.ok(entry);
     }
 
-    @DeleteMapping("/api/debt/entries/delete/{id}")
+    @DeleteMapping("/api/debt/entry/{id}")
     public ResponseEntity<Void> deleteEntryById(@PathVariable Long id, HttpSession session) {
         Long userId = (Long) session.getAttribute("user_id");
         if (userId == null) throw new UnauthorizedException("You need to login first");
@@ -72,7 +72,7 @@ public class DebtEntriesController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/api/debt/entries/update/{id}")
+    @PutMapping("/api/debt/entry/{id}")
     public ResponseEntity<DebtEntryResponse> updateEntry(@Valid @RequestBody DebtEntryRequest debtEntry, @PathVariable Long id, HttpSession session) {
         Long userId = (Long) session.getAttribute("user_id");
         if (userId == null) throw new UnauthorizedException("You need to login first");
@@ -93,7 +93,7 @@ public class DebtEntriesController {
 
     //general endpoints
 
-    @GetMapping("/api/types/list")
+    @GetMapping("/api/debt/types")
     public ResponseEntity<DebtType[]> getTypeList() {
         return ResponseEntity.ok(DebtType.values());
     }
