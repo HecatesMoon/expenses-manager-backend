@@ -57,10 +57,10 @@ public class UsersService {
     private void newUserValidation(RegisterRequest user){
         
         if (!user.getPassword().equals(user.getConfirmPassword())){
-            throw new BusinessException("Passwords are not equal");
+            throw new BusinessException("Passwords are not the same");
         }
         if (repository.existsByEmail(user.getEmail())){
-            throw new BusinessException("This email already exists");
+            throw new BusinessException("This email already has an account");
         }
     }
 }
