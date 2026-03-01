@@ -1,5 +1,7 @@
 package com.hecatesmoon.expenses_manager.controller;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -7,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.hecatesmoon.expenses_manager.dto.LoginRequest;
 import com.hecatesmoon.expenses_manager.dto.RegisterRequest;
 import com.hecatesmoon.expenses_manager.dto.UserResponse;
-import com.hecatesmoon.expenses_manager.model.User;
 import com.hecatesmoon.expenses_manager.service.UsersService;
 
 import jakarta.servlet.http.HttpSession;
@@ -45,9 +46,9 @@ public class UsersController {
     }
     
     @GetMapping("/api/user/logout")
-    public ResponseEntity<?> getMethodName(HttpSession session) { 
+    public ResponseEntity<Map<String, String>> getMethodName(HttpSession session) { 
         session.invalidate();
-        return ResponseEntity.ok("Logged out succesfully"); //todo: better messaging
+        return ResponseEntity.ok(Map.of("message","Logged out succesfully"));
     }
      
 }
