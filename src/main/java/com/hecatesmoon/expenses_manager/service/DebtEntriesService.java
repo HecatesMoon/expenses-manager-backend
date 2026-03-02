@@ -97,15 +97,8 @@ public class DebtEntriesService {
         this.deleteEntry(entry.getId(), userId);
     }
 
-    //todo: sum from sql
-    public BigDecimal getTotalDebt(Long id){
-        BigDecimal total = BigDecimal.ZERO;
-        List<DebtEntry> debtList = debtRepository.findByUserId(id);
-        for (DebtEntry entry : debtList){
-            total = total.add(entry.getMoneyAmount());
-        }
-
-        return total;
+    public BigDecimal getTotalRemainingDebt(Long id){
+        return debtRepository.sumByUserId(id);
     }
-    
+
 }

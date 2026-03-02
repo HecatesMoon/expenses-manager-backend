@@ -1,6 +1,7 @@
 package com.hecatesmoon.expenses_manager.controller;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,7 +36,7 @@ public class DebtEntriesController {
     }
 
     //User based endpoints
-    @GetMapping("/api/debt/entries")
+    @GetMapping("/api/debt/entries") //todo: fix user response in debtentryresponse
     public List<DebtEntryResponse> getAllEntries(HttpSession session) {
         Long userId = (Long) session.getAttribute("user_id");
         if (userId == null) throw new UnauthorizedException("You need to login first");
@@ -82,13 +83,12 @@ public class DebtEntriesController {
         return ResponseEntity.ok(updated);
     }
     
-    @GetMapping("/api/debt/total")
+    @GetMapping("/api/debt/total-remaining")
     public ResponseEntity<Map<String,BigDecimal>> getTotalAmount(HttpSession session) {
         Long userId = (Long) session.getAttribute("user_id");
         if (userId == null) throw new UnauthorizedException("You need to login first");
 
-        BigDecimal total = debtService.getTotalDebt(userId);
-        return ResponseEntity.ok(Map.of("total", total));
+        return ResponseEntity.ok(Map.of("total", debtService.getTotalRemainingDebt(userId)));
     }
 
     //general endpoints
