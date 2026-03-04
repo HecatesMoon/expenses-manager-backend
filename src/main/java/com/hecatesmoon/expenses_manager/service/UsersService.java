@@ -31,12 +31,11 @@ public class UsersService {
     public UserResponse createUser(RegisterRequest newUser){
 
         newUserValidation(newUser);
-        
+
         User user = RegisterRequest.toEntity(newUser);
 
-        String newPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(newPassword);
-
+        String hashedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(hashedPassword);
 
         user = this.repository.save(user);
 
@@ -44,7 +43,7 @@ public class UsersService {
     }
 
     public UserResponse loginValidation(LoginRequest login){
-        User user = repository.findByEmail(login.getEmail())
+        User user = repository.findByEmail(login.getEmail().toLowerCase())
                               .orElseThrow(() -> new BusinessException("Email or Password not valid"));
         
         if (!passwordEncoder.matches(login.getPassword(), user.getPassword())){
@@ -59,7 +58,7 @@ public class UsersService {
         if (!user.getPassword().equals(user.getConfirmPassword())){
             throw new BusinessException("Passwords are not the same");
         }
-        if (repository.existsByEmail(user.getEmail())){
+        if (repository.existsByEmail(user.getEmail().toLowerCase())){
             throw new BusinessException("This email already has an account");
         }
     }

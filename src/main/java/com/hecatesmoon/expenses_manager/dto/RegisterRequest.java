@@ -31,7 +31,7 @@ public class RegisterRequest {
         User user = new User();
         user.setFirstName(request.firstName);
         user.setLastName(request.lastName);
-        user.setEmail(request.email);
+        user.setEmail(request.email.toLowerCase());
         user.setPassword(request.password);
         return user;
     }
