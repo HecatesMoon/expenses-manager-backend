@@ -38,11 +38,6 @@ public class DebtEntriesService {
 
     public Page<DebtEntryResponse> getAllUserEntries(Long id, Boolean isPaid, Boolean isActive, Pageable pageable){
 
-        //todo: do I need this?
-        if (!usersRepository.existsById(id)){
-            throw new AccessDeniedException("This user does not exist: " + id);
-        }
-
         if(pageable.getPageSize() > 50) {
             throw new BusinessException("Max page size is 50");
         }
