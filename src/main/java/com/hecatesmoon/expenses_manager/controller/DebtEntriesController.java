@@ -1,6 +1,8 @@
 package com.hecatesmoon.expenses_manager.controller;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.hecatesmoon.expenses_manager.dto.DebtEntryRequest;
 import com.hecatesmoon.expenses_manager.dto.DebtEntryResponse;
+import com.hecatesmoon.expenses_manager.dto.TypeResponse;
 import com.hecatesmoon.expenses_manager.exception.UnauthorizedException;
 import com.hecatesmoon.expenses_manager.model.DebtType;
 import com.hecatesmoon.expenses_manager.service.DebtEntriesService;
@@ -101,7 +104,13 @@ public class DebtEntriesController {
     //general endpoints
 
     @GetMapping("/api/debt/types")
-    public ResponseEntity<DebtType[]> getTypeList() {
-        return ResponseEntity.ok(DebtType.values());
+    public ResponseEntity<List<TypeResponse>> getTypeList() {
+        List<TypeResponse> types = new ArrayList<>();
+
+        for (DebtType type : DebtType.values()){
+            types.add(TypeResponse.from(type));
+        }
+
+        return ResponseEntity.ok(types);
     }
 }
