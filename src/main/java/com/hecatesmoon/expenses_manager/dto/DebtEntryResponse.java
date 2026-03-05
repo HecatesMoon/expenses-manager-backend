@@ -9,6 +9,7 @@ import com.hecatesmoon.expenses_manager.model.DebtType;
 public class DebtEntryResponse {
 
     private Long id;
+    private String description;
     private BigDecimal moneyAmount;
     private DebtType type;
     private Boolean isPaid;
@@ -19,6 +20,7 @@ public class DebtEntryResponse {
     public static DebtEntryResponse from (DebtEntry entry){
         DebtEntryResponse response = new DebtEntryResponse();
         response.id = entry.getId();
+        response.description = entry.getDescription();
         response.moneyAmount = entry.getMoneyAmount();
         response.type = entry.getType();
         response.isPaid = entry.getIsPaid();
@@ -31,6 +33,10 @@ public class DebtEntryResponse {
     public Long getId() {
         return id;
     }
+
+    public String getDescription() {
+        return description;
+    }    
 
     public BigDecimal getMoneyAmount() {
         return moneyAmount;

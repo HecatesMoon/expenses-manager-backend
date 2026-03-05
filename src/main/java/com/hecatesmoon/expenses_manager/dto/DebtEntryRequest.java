@@ -9,8 +9,12 @@ import com.hecatesmoon.expenses_manager.model.DebtType;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 
 public class DebtEntryRequest {
+
+    @Size(max = 150, message = "You can only write up to 150 characters")
+    private String description;
 
     @NotNull(message = "Amount can't be null")
     @Positive(message = "Amount has to be greater than zero")
@@ -28,12 +32,17 @@ public class DebtEntryRequest {
 
     public static DebtEntry toEntity (DebtEntryRequest request){
         DebtEntry entry = new DebtEntry();
+        entry.setDescription(request.description);
         entry.setMoneyAmount(request.moneyAmount);
         entry.setType(request.type);
         entry.setIsPaid(request.isPaid);
         entry.setIsActive(request.isActive);
         entry.setDateLimit(request.dateLimit);
         return entry;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public BigDecimal getMoneyAmount() {

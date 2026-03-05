@@ -26,6 +26,8 @@ public class DebtEntry {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String description;
+
     private BigDecimal moneyAmount;
 
     @Enumerated(EnumType.STRING)
@@ -59,6 +61,14 @@ public class DebtEntry {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public BigDecimal getMoneyAmount() {
