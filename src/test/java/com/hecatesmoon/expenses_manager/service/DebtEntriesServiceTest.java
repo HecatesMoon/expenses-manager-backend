@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.hecatesmoon.expenses_manager.dto.DebtEntryResponse;
+import com.hecatesmoon.expenses_manager.exception.AccessDeniedException;
 import com.hecatesmoon.expenses_manager.exception.ResourceNotFoundException;
 import com.hecatesmoon.expenses_manager.model.DebtEntry;
 import com.hecatesmoon.expenses_manager.model.User;
@@ -81,6 +82,26 @@ public class DebtEntriesServiceTest {
         //todo: make isequal method for dto
         Assertions.assertEquals(expected.getId(), result.getId());
 
+    }
+
+    @Test public void getById_validIdButUserIsNotOwner(){
+        long userId = 14l;
+        User user = new User();
+        user.setId(userId);
+        long userId2 = 3l;
+        User user2 = new User();
+        user2.setId(userId2);
+
+        long id = 12l;
+        DebtEntry entry = new DebtEntry();
+        entry.setId(id);
+        entry.setUser(user);
+
+        when(debtEntriesRepoMock.findById(id)).thenReturn(Optional.of(entry));
+
+        Assertions.assertThrows(AccessDeniedException.class, () -> {
+            debtEntriesService.getById(id, userId2);
+        } );
     }
     
 }
