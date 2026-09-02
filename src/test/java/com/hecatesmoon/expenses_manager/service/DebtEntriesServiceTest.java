@@ -1,6 +1,11 @@
 package com.hecatesmoon.expenses_manager.service;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
@@ -8,9 +13,13 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import com.hecatesmoon.expenses_manager.dto.DebtEntryResponse;
 import com.hecatesmoon.expenses_manager.exception.AccessDeniedException;
+import com.hecatesmoon.expenses_manager.exception.BusinessException;
 import com.hecatesmoon.expenses_manager.exception.ResourceNotFoundException;
 import com.hecatesmoon.expenses_manager.model.DebtEntry;
 import com.hecatesmoon.expenses_manager.model.User;
@@ -49,6 +58,19 @@ public class DebtEntriesServiceTest {
         List<DebtEntry> result = debtEntriesService.getAll();
 
         Assertions.assertIterableEquals(list, result);
+    }
+
+    @Test
+    public void getAllUserEntries_PageSizeAboveLimit(){
+        long userId = 1l;
+        Pageable pageable = PageRequest.of(0, 51, Sort.by("createdAt").descending());
+
+        Assertions.assertThrows(BusinessException.class, () -> {
+            debtEntriesService.getAllUserEntries(userId, null, null, pageable);
+        });
+
+        verify(debtEntriesRepoMock, never()).findByUserIdWithFilters(anyLong(), any(), any(), any(Pageable.class));
+
     }
 
     @Test
